@@ -1,0 +1,6 @@
+{
+  "name": "Fitness RPG & Saúde",
+  "description": "Aplicativo fitness gamificado com integração Strava OAuth, importação Apple Health/GPX/CSV, Coach IA Oráculo e relatórios detalhados de tendências, zonas cardíacas e recuperação.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

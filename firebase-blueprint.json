@@ -1,0 +1,387 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Registro raiz de conta do jogador autenticado.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "createdAt": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "lastLoginAt": {
+          "type": "string",
+          "maxLength": 40
+        }
+      },
+      "required": ["userId", "displayName", "createdAt", "lastLoginAt"]
+    },
+    "HeroProfile": {
+      "title": "HeroProfile",
+      "description": "Ficha de personagem RPG e parâmetros fisiológicos base do usuário.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "name": { "type": "string", "minLength": 2, "maxLength": 24 },
+        "avatar": { "type": "string", "minLength": 1, "maxLength": 16 },
+        "heroClass": { "type": "string", "enum": ["Guerreiro", "Arqueiro", "Mago"] },
+        "objective": { "type": "string", "enum": ["Emagrecer", "Condicionamento", "Ambos"] },
+        "experience": { "type": "string", "enum": ["Iniciante", "Intermediário", "Avançado"] },
+        "heightCm": { "type": "number" },
+        "weightKg": { "type": "number" },
+        "restingHrBaseline": { "type": "number" },
+        "maxHrEstimated": { "type": "number" },
+        "createdAt": { "type": "string", "maxLength": 40 },
+        "updatedAt": { "type": "string", "maxLength": 40 }
+      },
+      "required": ["userId", "name", "avatar", "heroClass", "objective", "experience", "createdAt", "updatedAt"]
+    },
+    "GameStats": {
+      "title": "GameStats",
+      "description": "Estatísticas acumuladas de XP, nível, HP, moedas de ouro, arsenal, chefes e contagem por modalidade.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "totalXp": { "type": "number" },
+        "level": { "type": "number" },
+        "hunterHp": { "type": "number" },
+        "goldCoins": { "type": "number" },
+        "totalCoinsEarned": { "type": "number" },
+        "bossesDefeated": { "type": "number" },
+        "ownedEquipmentIds": { "type": "array" },
+        "equippedGear": { "type": "object" },
+        "gearLoadouts": { "type": "array", "description": "Lista de até 4 presets de loadout salvos no Arsenal." },
+        "claimedAutoQuestKeys": { "type": "array" },
+        "currentStreak": { "type": "number" },
+        "longestStreak": { "type": "number" },
+        "lastWorkoutDate": { "type": "string", "maxLength": 20 },
+        "totalWorkouts": { "type": "number" },
+        "totalMinutes": { "type": "number" },
+        "cardioWorkouts": { "type": "number" },
+        "forcaWorkouts": { "type": "number" },
+        "hiitWorkouts": { "type": "number" },
+        "coreWorkouts": { "type": "number" },
+        "mobilidadeWorkouts": { "type": "number" },
+        "corpoInteiroWorkouts": { "type": "number" },
+        "updatedAt": { "type": "string", "maxLength": 40 }
+      },
+      "required": [
+        "userId",
+        "totalXp",
+        "level",
+        "currentStreak",
+        "longestStreak",
+        "totalWorkouts",
+        "totalMinutes",
+        "cardioWorkouts",
+        "forcaWorkouts",
+        "hiitWorkouts",
+        "coreWorkouts",
+        "mobilidadeWorkouts",
+        "corpoInteiroWorkouts",
+        "updatedAt"
+      ]
+    },
+    "WorkoutTemplate": {
+      "title": "WorkoutTemplate",
+      "description": "Missão de treino estruturada disponível para o usuário.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "name": { "type": "string", "minLength": 2, "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 500 },
+        "type": { "type": "string", "enum": ["cardio", "forca", "hiit", "core", "mobilidade", "corpo_inteiro"] },
+        "difficulty": { "type": "string", "enum": ["Iniciante", "Intermediário", "Avançado"] },
+        "durationMinutes": { "type": "number" },
+        "baseXp": { "type": "number" },
+        "rank": { "type": "string", "enum": ["F", "E", "D", "C", "B", "A", "S"] },
+        "exercises": { "type": "array" }
+      },
+      "required": ["id", "userId", "name", "description", "type", "difficulty", "durationMinutes", "baseXp", "rank", "exercises"]
+    },
+    "WorkoutLog": {
+      "title": "WorkoutLog",
+      "description": "Registro histórico de treino guiado concluído pelo usuário.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "workoutId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "workoutName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "workoutType": { "type": "string", "enum": ["cardio", "forca", "hiit", "core", "mobilidade", "corpo_inteiro"] },
+        "difficulty": { "type": "string", "enum": ["Iniciante", "Intermediário", "Avançado"] },
+        "completedExercises": { "type": "number" },
+        "totalExercises": { "type": "number" },
+        "durationMinutes": { "type": "number" },
+        "xpEarned": { "type": "number" },
+        "bonusXpEarned": { "type": "number" },
+        "performedExercises": { "type": "array" },
+        "totalVolumeKg": { "type": "number" },
+        "prCount": { "type": "number" },
+        "dateKey": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "completedAt": { "type": "string", "maxLength": 40 }
+      },
+      "required": [
+        "id",
+        "userId",
+        "workoutId",
+        "workoutName",
+        "workoutType",
+        "difficulty",
+        "completedExercises",
+        "totalExercises",
+        "durationMinutes",
+        "xpEarned",
+        "bonusXpEarned",
+        "dateKey",
+        "completedAt"
+      ]
+    },
+    "UserAchievement": {
+      "title": "UserAchievement",
+      "description": "Estado de desbloqueio de conquistas do usuário.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "unlocked": { "type": "boolean" },
+        "unlockedAt": { "type": "string", "maxLength": 40 }
+      },
+      "required": ["id", "userId", "unlocked"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Histórico de mensagens trocadas com o Coach IA Oráculo.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "role": { "type": "string", "enum": ["user", "oracle"] },
+        "content": { "type": "string", "minLength": 1, "maxLength": 4000 },
+        "createdAt": { "type": "string", "maxLength": 40 }
+      },
+      "required": ["id", "userId", "role", "content", "createdAt"]
+    },
+    "DailyVow": {
+      "title": "DailyVow",
+      "description": "Voto diário de disciplina com recompensa e penalidade.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "title": { "type": "string", "minLength": 3, "maxLength": 80 },
+        "xpReward": { "type": "number" },
+        "penaltyXp": { "type": "number" },
+        "completedDateKey": { "type": "string", "maxLength": 20 },
+        "violatedDateKey": { "type": "string", "maxLength": 20 },
+        "createdAt": { "type": "string", "maxLength": 40 }
+      },
+      "required": ["id", "userId", "title", "xpReward", "penaltyXp", "createdAt"]
+    },
+    "HealthActivity": {
+      "title": "HealthActivity",
+      "description": "Atividade física sincronizada via Strava OAuth ou importada de Samsung Health, Apple Health XML, GPX ou CSV.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "externalId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "source": { "type": "string", "enum": ["strava", "apple_health", "samsung_health", "gpx", "csv"] },
+        "title": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "sportType": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "dateKey": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "startedAt": { "type": "string", "maxLength": 40 },
+        "durationMinutes": { "type": "number" },
+        "distanceKm": { "type": "number" },
+        "calories": { "type": "number" },
+        "elevationGainM": { "type": "number" },
+        "avgHeartRate": { "type": "number" },
+        "maxHeartRate": { "type": "number" },
+        "zoneMinutes": { "type": "array" },
+        "hrSamplePoints": { "type": "array" },
+        "xpAwarded": { "type": "number" },
+        "createdAt": { "type": "string", "maxLength": 40 }
+      },
+      "required": [
+        "id",
+        "userId",
+        "externalId",
+        "source",
+        "title",
+        "sportType",
+        "dateKey",
+        "startedAt",
+        "durationMinutes",
+        "distanceKm",
+        "calories",
+        "elevationGainM",
+        "zoneMinutes",
+        "hrSamplePoints",
+        "xpAwarded",
+        "createdAt"
+      ]
+    },
+    "DailyHealthMetric": {
+      "title": "DailyHealthMetric",
+      "description": "Resumo biométrico diário agregado (passos, sono, FC de repouso, carga e prontidão).",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "dateKey": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "steps": { "type": "number" },
+        "activeCalories": { "type": "number" },
+        "sleepHours": { "type": "number" },
+        "restingHeartRate": { "type": "number" },
+        "hrvMs": { "type": "number" },
+        "trainingLoadScore": { "type": "number" },
+        "recoveryScore": { "type": "number" },
+        "sources": { "type": "array" },
+        "updatedAt": { "type": "string", "maxLength": 40 }
+      },
+      "required": [
+        "id",
+        "userId",
+        "dateKey",
+        "steps",
+        "activeCalories",
+        "sleepHours",
+        "trainingLoadScore",
+        "recoveryScore",
+        "sources",
+        "updatedAt"
+      ]
+    },
+    "WeightLog": {
+      "title": "WeightLog",
+      "description": "Registro diário de peso corporal para acompanhamento de progresso físico ao longo do tempo.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 10, "maxLength": 40, "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "weightKg": { "type": "number" },
+        "dateKey": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "note": { "type": "string", "maxLength": 140 },
+        "recordedAt": { "type": "string", "maxLength": 40 },
+        "updatedAt": { "type": "string", "maxLength": 40 }
+      },
+      "required": ["id", "userId", "weightKg", "dateKey", "recordedAt", "updatedAt"]
+    },
+    "HealthConnectRecord": {
+      "title": "HealthConnectRecord",
+      "description": "Registro sincronizado via Android Health Connect (exercícios, passos, FC e calorias).",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "recordId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "type": { "type": "string", "enum": ["exercise", "steps", "heart_rate", "calories"] },
+        "startTime": { "type": "string", "maxLength": 40 },
+        "endTime": { "type": "string", "maxLength": 40 },
+        "values": { "type": "object" },
+        "updatedAt": { "type": "integer" }
+      },
+      "required": ["userId", "recordId", "type", "startTime", "endTime", "values", "updatedAt"]
+    },
+    "ExercisePr": {
+      "title": "ExercisePr",
+      "description": "Recorde pessoal (PR) de carga, repetições, volume por série e 1RM estimado por exercício.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "exerciseId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "exerciseName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "bestWeightKg": { "type": "number" },
+        "bestReps": { "type": "integer" },
+        "bestVolumeKg": { "type": "number" },
+        "estimated1RmKg": { "type": "number" },
+        "updatedAt": { "type": "string", "maxLength": 40 },
+        "workoutLogId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "dateKey": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" }
+      },
+      "required": [
+        "id",
+        "userId",
+        "exerciseId",
+        "exerciseName",
+        "bestWeightKg",
+        "bestReps",
+        "bestVolumeKg",
+        "estimated1RmKg",
+        "updatedAt",
+        "workoutLogId",
+        "dateKey"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Documento raiz do jogador autenticado."
+    },
+    "/users/{userId}/heroProfiles/{profileId}": {
+      "schema": { "$ref": "#/entities/HeroProfile" },
+      "description": "Ficha do herói do jogador."
+    },
+    "/users/{userId}/gameStats/{statsId}": {
+      "schema": { "$ref": "#/entities/GameStats" },
+      "description": "Estatísticas RPG e progresso do jogador."
+    },
+    "/users/{userId}/workouts/{workoutId}": {
+      "schema": { "$ref": "#/entities/WorkoutTemplate" },
+      "description": "Catálogo de treinos guiados do jogador."
+    },
+    "/users/{userId}/workoutLogs/{logId}": {
+      "schema": { "$ref": "#/entities/WorkoutLog" },
+      "description": "Histórico de sessões guiadas concluídas."
+    },
+    "/users/{userId}/achievements/{achievementId}": {
+      "schema": { "$ref": "#/entities/UserAchievement" },
+      "description": "Conquistas desbloqueadas pelo jogador."
+    },
+    "/users/{userId}/chatMessages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "Mensagens persistidas com o Coach IA Oráculo."
+    },
+    "/users/{userId}/dailyVows/{vowId}": {
+      "schema": { "$ref": "#/entities/DailyVow" },
+      "description": "Votos diários de disciplina."
+    },
+    "/users/{userId}/healthActivities/{activityId}": {
+      "schema": { "$ref": "#/entities/HealthActivity" },
+      "description": "Atividades físicas importadas de APIs e arquivos de saúde."
+    },
+    "/users/{userId}/dailyHealthMetrics/{metricId}": {
+      "schema": { "$ref": "#/entities/DailyHealthMetric" },
+      "description": "Métricas fisiológicas diárias para relatórios de tendências e recuperação."
+    },
+    "/users/{userId}/weightLogs/{logId}": {
+      "schema": { "$ref": "#/entities/WeightLog" },
+      "description": "Histórico diário de pesagens do jogador para acompanhamento físico."
+    },
+    "/users/{userId}/healthConnectRecords/{recordId}": {
+      "schema": { "$ref": "#/entities/HealthConnectRecord" },
+      "description": "Registros brutos sincronizados via Android Health Connect."
+    },
+    "/users/{userId}/exercisePrs/{exerciseId}": {
+      "schema": { "$ref": "#/entities/ExercisePr" },
+      "description": "Recordes pessoais (PRs) de carga, volume e 1RM estimado por exercício."
+    }
+  }
+}

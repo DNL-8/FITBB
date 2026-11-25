@@ -1,0 +1,11 @@
+node_modules/
+build/
+android/.gradle/
+android/.kotlin/
+android/local.properties
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example

@@ -1,0 +1,92 @@
+name: Verificacao do App-fitness
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Tipos, testes e compilacao
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Obter codigo
+        uses: actions/checkout@v4
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Configurar Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Instalar dependencias
+        run: bun install --frozen-lockfile
+      - name: Auditar dependencias de producao
+        run: bun audit --production --audit-level high
+      - name: Verificar tipos TypeScript
+        run: bun run lint
+      - name: Executar testes
+        run: bun run test
+      - name: Testar a entrada da funcao
+        run: bun run test:entry
+      - name: Compilar para producao
+        run: bun run build
+      - name: Testar o build e os fluxos no navegador
+        run: bun run test:browser
+
+  firestore:
+    name: Regras do Firestore
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: npx --yes firebase-tools@15.37.0 emulators:exec --only firestore --project demo-app-fitness "bun run test:rules"
+
+  android:
+    name: Build Android
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools platforms;android-35 build-tools;34.0.0 build-tools;35.0.0"
+          log-accepted-android-sdk-licenses: 'false'
+      - run: ./gradlew :app:assembleDebug --no-daemon
+        working-directory: android
+  production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node scripts/check-production.mjs

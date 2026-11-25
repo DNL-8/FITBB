@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" rx="96" fill="#09090B" />
+  <rect x="24" y="24" width="464" height="464" rx="80" fill="#111113" stroke="#27272A" stroke-width="8" />
+  <!-- Shield Frame -->
+  <path
+    d="M256 84L388 136V252C388 334 331 402 256 428C181 402 124 334 124 252V136L256 84Z"
+    fill="#18181B"
+    stroke="#F97316"
+    stroke-width="14"
+    stroke-linejoin="round"
+  />
+  <!-- Inner Energy Core -->
+  <path
+    d="M256 122L354 160V248C354 312 311 366 256 388C201 366 158 312 158 248V160L256 122Z"
+    fill="#09090B"
+    stroke="#27272A"
+    stroke-width="6"
+    stroke-linejoin="round"
+  />
+  <!-- Crossed Sword / Flame Crest -->
+  <path
+    d="M256 150L282 222L256 330L230 222L256 150Z"
+    fill="#F97316"
+  />
+  <path
+    d="M204 268H308"
+    stroke="#F4F4F5"
+    stroke-width="18"
+    stroke-linecap="round"
+  />
+  <circle cx="256" cy="316" r="14" fill="#10B981" />
+</svg>

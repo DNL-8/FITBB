@@ -1,0 +1,7 @@
+<resources>
+    <string name="health_connect_privacy_title">Privacidade do Health Connect</string>
+    <string name="health_connect_privacy_data">Com a sua permissão, o Fitness RPG lê sessões de exercício, contagens de passos, amostras de frequência cardíaca e calorias totais queimadas dos últimos 30 dias. Cada leitura respeita os tipos de dados que você autorizou.</string>
+    <string name="health_connect_privacy_sync">Ao sincronizar, o app salva os registros, seus identificadores e horários no Cloud Firestore, na conta do Fitness RPG vinculada ao seu login com Google.</string>
+    <string name="health_connect_privacy_permissions">Você pode revisar ou revogar o acesso do Fitness RPG nas configurações do Health Connect. Isso impede novas leituras dos tipos revogados. Os registros já sincronizados permanecem na sua conta. A leitura em segundo plano depende de uma permissão separada, que você também pode revogar.</string>
+    <string name="health_connect_privacy_back">Voltar</string>
+</resources>
